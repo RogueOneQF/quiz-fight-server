@@ -1,5 +1,11 @@
 'use strict';
 
+function validateAnswer(question) {
+    return (question.trueOrFalse)
+        ? (question.answer < 2)
+        : (question.answer > 0)
+}
+
 var Question = (function () {
 
 	var mongoose = require('mongoose');
@@ -31,11 +37,7 @@ var Question = (function () {
 					max: 4,
                     required: true,
                     validate: {
-                        validator: function(question) {
-                            return (question.trueOrFalse)
-                                ? (question.answer < 2)
-                                : (question.answer > 0)
-                        },
+                        validator: validateAnswer,
                         message: 'Invalid answer/question type combination'
                     }
 				}
