@@ -1,13 +1,19 @@
-var duelModel = (function () {
-	
+'use strict';
+
+var Duel = (function () {
+
 	var mongoose = require('mongoose');
 
 	return  {
 		getSchema: function() {
 			return new mongoose.Schema({
-				user1_id: String,
-				user2_id: String,
-				quizzes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Quiz' }]
+				user1_id: {type: String, required: true},
+				user2_id: {type: String, required: true},
+				quizzes: [{
+                    type: mongoose.Schema.Types.ObjectId,
+                    ref: 'Quiz',
+                    required: true
+                }]
 			});
 		},
 		getModel: function() {
