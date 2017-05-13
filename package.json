@@ -4,11 +4,12 @@
   "description": "Quiz Fight Server",
   "main": "quizFightServer.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node ./bin/www"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/RogueOneQF/quiz-fight-server.git"
+    "url": "https://github.com/RogueOneQF/quiz-fight-server.git"
   },
   "author": "RogueOne team <rogueoneqf@gmail.com>",
   "license": "ISC",
@@ -17,7 +18,8 @@
   },
   "homepage": "https://github.com/RogueOneQF/quiz-fight-server#readme",
   "dependencies": {
+    "body-parser": "~1.13.2",
     "express": "^4.15.2",
-	"mongoose": "^4.4.14"
+	  "mongoose": "^4.4.14"
   }
 }
