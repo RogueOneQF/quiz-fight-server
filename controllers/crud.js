@@ -9,79 +9,71 @@ module.exports = function(modelName) {
 
 	return {
 		create: function(req, res) {
-			var model = new Model(req.body);
+            var element = new Model(req.body.element);
 
-			model.save(function(err) {
+			element.save(function(err) {
 				if (err) {
 					return res.status(400).send({
 						message: "Bad request"
 					});
 				} else {
-					res.status(201).json(model);
+					res.status(201).json(element);
 				}
 			});
 		},
-		read: function(req, res) {
-			res.json(req.modelName);
-		},
+
 		update: function(req, res) {
-			var model = req.modelName;
-
-			model = _.extend(model, req.body);
-
-			model.save(function(err) {
+			Model.findByIdAndUpdate(req.body.element_id, {
+                $set: req.body.element
+            },function(err, element) {
 				if (err) {
 					return res.status(400).send({
 						message: "Bad request"
 					});
 				} else {
-					res.json(model);
+					res.json(element);
 				}
 			});
 		},
+
 		delete: function(req, res) {
-			var model = req.modelName;
-
-			model.remove(function(err) {
+			Model.findByIdAndRemove(req.body.element_id, function(err, element) {
 				if (err) {
 					return res.status(400).send({
 						message: "Bad request"
 					});
 				} else {
-					res.json(model);
+					res.json(element);
 				}
 			});
 		},
+
 		list: function(req, res) {
-			var query = {};
-
-			Model.find(query).exec(function(err, models) {
+			Model.find(function(err, elements) {
 				if (err) {
-					return res.status(400).send({
+					res.status(400).send({
 						message: "Bad request"
 					});
 				} else {
-					res.json(models);
+					res.json(elements);
 				}
 			});
 		},
-		getByID: function(req, res, next, id) {
-			if (!mongoose.Types.ObjectId.isValid(id)) {
-				return res.status(400).send({
-					message: modelName + ' is invalid'
-				});
-			}
 
-			Model.findById(id).exec(function(err, model) {
-				if (err) return next(err);
-				if (!model) {
-					return res.status(404).send({
-		  				message: modelName + ' not found'
-		  			});
-				}
-				req.modelName = model;
-				next();
-			});
+		getByID: function(req, res) {
+			Model.findById(req.body.element_id, function(err, element) {
+                if (err) {
+                    res.status(400).send({
+                        message: 'Bad request'
+                    });
+                } else if (!element) {
+                    res.status(404).send({
+                        message: modelName + ' not found'
+                    });
+                } else {
+                    res.json(element);
+                }
+            });
 		}
 	};
 };

@@ -1,7 +1,7 @@
 'use strict';
 
-var mongoose = require('mongoose'),
-  Question = mongoose.model('Question');
+var mongoose = require('mongoose');
+var Question = require('../models/questionModel');
 
 var crud = require('./crud')('Question');
 
