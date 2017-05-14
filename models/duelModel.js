@@ -4,21 +4,27 @@ var Duel = (function () {
 
 	var mongoose = require('mongoose');
 
+    var getSchema = function() {
+        return new mongoose.Schema({
+            user1_id: {type: String, required: true},
+            user2_id: {type: String, required: true},
+            quizzes: [{
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'Quiz',
+                required: true
+            }]
+        });
+    };
+
+    var model = mongoose.model('Duel', getSchema());
+
 	return  {
-		getSchema: function() {
-			return new mongoose.Schema({
-				user1_id: {type: String, required: true},
-				user2_id: {type: String, required: true},
-				quizzes: [{
-                    type: mongoose.Schema.Types.ObjectId,
-                    ref: 'Quiz',
-                    required: true
-                }]
-			});
-		},
+		getSchema: getSchema,
 		getModel: function() {
-			return mongoose.model('Duel', this.getSchema());
+			return model;
 		}
 	};
 
 })();
+
+module.exports = Duel;
