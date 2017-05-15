@@ -1,7 +1,6 @@
 'use strict';
 
-var mongoose = require('mongoose'),
-    _ = require('lodash');
+var mongoose = require('mongoose');
 
 module.exports = function(modelName) {
 
