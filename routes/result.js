@@ -2,7 +2,6 @@
 
 var duels = require('../controllers/duelController');
 var quizzes = require('../controllers/quizController');
-var questions = require('../controllers/questionController');
 var errorHandler = require('../modules/errorHandler');
 
 var checkWinner = function(duel, player) {
