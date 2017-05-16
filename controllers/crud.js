@@ -5,73 +5,69 @@ var mongoose = require('mongoose');
 module.exports = function(modelName) {
 
 	var Model = mongoose.model(modelName);
+    var notFound = {'status': 404, 'message': 'Not found'};
+    var badRequest = {'status': 400, 'message': 'Bad request'};
 
 	return {
-		create: function(req, res) {
-            var element = new Model(req.body.element);
+		create: function(params, callback) {
+            var elem = new Model(params.element);
 
-			element.save(function(err) {
+			elem.save(function(err) {
 				if (err) {
-					return res.status(400).send({
-						message: "Bad request"
-					});
+                    callback(badRequest);
 				} else {
-					res.status(201).json(element);
+					callback(undefined, elem);
 				}
 			});
 		},
 
-		update: function(req, res) {
-			Model.findByIdAndUpdate(req.body.element_id, {
-                $set: req.body.element
+		update: function(params, callback) {
+			Model.findByIdAndUpdate(params.elementID, {
+                $set: params.element
             },function(err, element) {
-				if (err) {
-					return res.status(400).send({
-						message: "Bad request"
-					});
-				} else {
-					res.json(element);
+                if (err) {
+                    callback(badRequest);
+				} else if (!element) {
+                    callback(notFound);
+                } else {
+					callback(undefined, element);
 				}
 			});
 		},
 
-		delete: function(req, res) {
-			Model.findByIdAndRemove(req.body.element_id, function(err, element) {
-				if (err) {
-					return res.status(400).send({
-						message: "Bad request"
-					});
-				} else {
-					res.json(element);
+		delete: function(params, callback) {
+			Model.findByIdAndRemove(params.elementID, function(err, element) {
+                if (err) {
+                    callback(badRequest);
+				} else if (!element) {
+                    callback(notFound);
+                } else {
+					callback(undefined, element);
 				}
 			});
 		},
 
-		list: function(req, res) {
+		list: function(callback) {
 			Model.find(function(err, elements) {
 				if (err) {
-					res.status(400).send({
-						message: "Bad request"
-					});
-				} else {
-					res.json(elements);
+					callback(badRequest);
+				} else if (!elements) {
+                    callback(notFound);
+                } else {
+					callback(undefined, elements);
 				}
 			});
 		},
 
-		getByID: function(req, res) {
-			Model.findById(req.body.element_id, function(err, element) {
+		getByID: function(id, callback) {
+			Model.findById(id, function(err, element) {
                 if (err) {
-                    res.status(400).send({
-                        message: 'Bad request'
-                    });
-                } else if (!element) {
-                    res.status(404).send({
-                        message: modelName + ' not found'
-                    });
+                    callback(badRequest);
+				} else if (!element) {
+                    callback(notFound);
                 } else {
-                    res.json(element);
-                }
+					callback(undefined, element);
+				}
             });
 		}
 	};
