@@ -39,16 +39,16 @@ var get = function(req, res) {
 };
 
 var put = function(req, res) {
-    duels.getByID(req.body.duel_id, function(err, duel) {
+    duels.getByID(req.body.duelID, function(err, duel) {
         var allowScore = function (duel, actualScore) {
-            var duelIndex = duel.quizzes.indexOf(req.body.quiz_id);
+            var duelIndex = duel.quizzes.indexOf(req.body.quizID);
             return (duelIndex != -1 && duel[actualScore].length < duelIndex + 1);
         };
 
         if (err) {
             errorHandler(res, err);
         } else {
-            var scoreField = (req.body.userID == duel.user1ID) ? "user1Score" : "user2Score";
+            var scoreField = (req.body.playerID == duel.user1ID) ? "user1Score" : "user2Score";
             if (allowScore(duel, scoreField)) {
                 duel[scoreField].push(req.body.score);
                 duels.update({
@@ -70,7 +70,7 @@ var put = function(req, res) {
                                     if (err) {
                                         errorHandler(res, err);
                                     } else {
-                                        res.json(checkWinner(duel, req.body.userID));
+                                        res.json(checkWinner(duel, req.body.playerID));
                                     }
                                 });
                             }

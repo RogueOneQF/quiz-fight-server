@@ -68,8 +68,8 @@ var post = function(req, res) {
                 errorHandler(res, err);
             } else {
                 res.status(201).json({
-                    'duel_id': duel.id,
-                    'quiz_id': result.quiz.id,
+                    'duelID': duel.id,
+                    'quizID': result.quiz.id,
                     'questions': result.questions
                 });
             }
@@ -84,8 +84,8 @@ var put = function(req, res) {
                 errorHandler(res, err);
             } else {
                 res.json({
-                    'duel_id': req.body.duelID,
-                    'quiz_id': result.quiz.id,
+                    'duelID': req.body.duelID,
+                    'quizID': result.quiz.id,
                     'questions': result.questions
                 });
             }
