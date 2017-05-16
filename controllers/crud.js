@@ -9,6 +9,8 @@ module.exports = function(modelName) {
     var badRequest = {'status': 400, 'message': 'Bad request'};
 
 	return {
+        notFound: notFound,
+        badRequest: badRequest,
 		create: function(params, callback) {
             var elem = new Model(params.element);
 
