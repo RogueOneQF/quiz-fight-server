@@ -6,13 +6,15 @@ var Duel = (function () {
 
     var getSchema = function() {
         return new mongoose.Schema({
-            user1_id: {type: String, required: true},
-            user2_id: {type: String, required: true},
+            user1ID: {type: String, required: true},
+            user2ID: {type: String, required: true},
             quizzes: [{
                 type: mongoose.Schema.Types.ObjectId,
                 ref: 'Quiz',
                 required: true
-            }]
+            }],
+            user1Score: [{type: Number, min: 0, required: true, default: []}],
+            user2Score: [{type: Number, min: 0, required: true, default: []}]
         });
     };
 

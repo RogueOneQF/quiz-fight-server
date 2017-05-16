@@ -10,7 +10,9 @@ var Quiz = (function () {
                 type: mongoose.Schema.Types.ObjectId,
                 ref: 'Question',
                 required: true
-            }]
+            }],
+            answers1: [[{type: Number, min: 1, max: 4, required: true, default: []}]],
+            answers2: [[{type: Number, min: 1, max: 4, required: true, default: []}]]
         });
     };
 
