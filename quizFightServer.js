@@ -3,6 +3,7 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
+var routes = require('./routes/routes');
 
 mongoose.connect('mongodb://admin:admin@ds137441.mlab.com:37441/quizfight')
     .then(() =>  console.log('connection succesful'))
@@ -12,8 +13,7 @@ var app = express();
 app.use(bodyParser.json({limit: '5mb'}));
 app.use(bodyParser.urlencoded({ extended: true }));
 
-var routes = require('./routes/routes');
-app.use('/', routes);
+routes(app);
 
 // error handlers
 
