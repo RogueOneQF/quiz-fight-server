@@ -15,22 +15,24 @@ var put = function(req, res) {
                 }
             }, function(err, user) {
                 console.log(err, user)
-                    res.status(201).json({
-                        'userID': user.id
-                    });
+                    res.status(201).send();
                 });
         } else { // existing user
-            user.tokens.push(req.body.token);
-            users.update({
-                'elementID': user.id,
-                'element': user
-            }, function(err, user) {
-                if(err) {
-                    errorHandler(err);
-                } else {
-                    res.send();
-                }
-            });
+            if (user.tokens.indexOf(req.body.token) == -1) {
+                user.tokens.push(req.body.token);
+                users.update({
+                    'elementID': user.id,
+                    'element': user
+                }, function(err, user) {
+                    if(err) {
+                        errorHandler(err);
+                    } else {
+                        res.send();
+                    }
+                });
+            } else {
+                res.send();
+            }
         }
     });
 };
