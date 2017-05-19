@@ -20,6 +20,7 @@
   "dependencies": {
     "body-parser": "~1.13.2",
     "express": "^4.15.2",
-	  "mongoose": "^4.4.14"
+    "firebase-admin": "^5.0.0",
+    "mongoose": "^4.4.14"
   }
 }
