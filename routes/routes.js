@@ -1,15 +1,14 @@
 'use strict';
 
-var router = require('express').Router();
-var bodyParser = require('body-parser');
+var fight = require('./fight');
+var result = require('./result');
 
-router.get('/', function(req, res) {
-    res.json({test: 1});
-});
+module.exports = function(app) {
+	app.route('/fight')
+        .post(fight.post)
+        .put(fight.put);
 
-router.options('/', function(req, res, next){
-    console.log(req.headers.origin);
-    res.send();
-});
-
-module.exports = router;
+	app.route('/result')
+        .get(result.get)
+        .put(result.put);
+}
