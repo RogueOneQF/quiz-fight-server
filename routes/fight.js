@@ -38,7 +38,7 @@ var createRound = function(filter, callback) {
                 numbers.push(i);
             }
             fisherYates(numbers, 5);
-            var randoms = numbers.slice(0, 4);
+            var randoms = numbers.slice(0, 5);
 
             var mqs = randoms.map(function(r) {
                 return qs[r];
