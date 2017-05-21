@@ -6,8 +6,8 @@ var addToken = require('./addToken');
 
 module.exports = function(app) {
 	app.route('/fight')
-        .post(fight.post)
-        .put(fight.put);
+        .post(fight.post);
+        //.put(fight.put);
 
 	app.route('/result')
         .get(result.get)
