@@ -14,7 +14,7 @@ var put = function(req, res) {
                     'tokens': [req.body.token]
                 }
             }, function(err, user) {
-                console.log(err, user)
+                	console.log(err, user);
                     res.status(201).send();
                 });
         } else { // existing user

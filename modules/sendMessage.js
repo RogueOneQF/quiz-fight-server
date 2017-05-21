@@ -6,7 +6,7 @@ module.exports = function(player, winner, score, opponentsName) {
         message = "You defeated " + opponentsName + " " + score.player + " - " + score.opponent;
         title = "You won :)";
     } else {
-        message = opponentsName " defeated you " + score.opponent + " - " + score.player;
+        message = opponentsName + " defeated you " + score.opponent + " - " + score.player;
         title = "You lost :(";
     }
     var payload = {
