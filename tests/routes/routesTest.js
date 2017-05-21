@@ -14,7 +14,7 @@ describe('POST /fight', () => {
 	it('should create a new fight', (done) => {
 		chai.request(server)
 		.post('/fight')
-		.send({topic: 'General Knowledge', user1: 'idUser1', user2: 'idUser2'})
+		.send({topic1: 'General Knowledge', topic2: 'General Knowledge', topic3: 'General Knowledge', user1: 'idUser1', user2: 'idUser2'})
 		.end((err, res) => {
 			// there should be no errors
 			should.not.exist(err);

@@ -57,27 +57,30 @@ var createRound = function(filter, callback) {
 };
 
 var post = function(req, res) {
-    createRound(getFilterObject(req.body.topic), function(err, result) {
-        console.log(result);
-        duels.create({'element': {
-            'user1ID': req.body.user1,
-            'user2ID': req.body.user2,
-            'quizzes': [result.quiz.id]
-        }}, function(err, duel) {
-            if (err) {
-                errorHandler(res, err);
-            } else {
-                res.status(201).json({
-                    'duelID': duel.id,
-                    'quizID': result.quiz.id,
-                    'questions': result.questions
-                });
-            }
-        });
+    createRound(getFilterObject(req.body.topic1), function(err1, result1) {
+		createRound(getFilterObject(req.body.topic2), function(err2, result2) {
+			createRound(getFilterObject(req.body.topic3), function(err3, result3) {
+				duels.create({'element': {
+				    'user1ID': req.body.user1,
+				    'user2ID': req.body.user2,
+				    'quizzes': [result1.quiz.id, result2.quiz.id, result3.quiz.id]
+				}}, function(err, duel) {
+				    if (err) {
+				        errorHandler(res, err);
+				    } else {
+				        res.status(201).json({
+				            'duelID': duel.id,
+				            'quizID': [result1.quiz.id, result2.quiz.id, result3.quiz.id],
+				            'questions': [result1.questions, result2.questions, result3.questions]
+				        });
+				    }
+				});
+			});
+		});
     });
 };
 
-var put = function(req, res) {
+/* var put = function(req, res) {
     createRound(getFilterObject(req.body.topic), function(err, result) {
         duels.addRound(req.body.duelID, result.quiz.id, function(err, duel) {
             if (err) {
@@ -91,11 +94,11 @@ var put = function(req, res) {
             }
         });
     });
-};
+}; */
 
 module.exports = {
-    post: post,
-    put: put
+    post: post
+    // put: put
 };
 
 

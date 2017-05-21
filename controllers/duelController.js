@@ -10,8 +10,8 @@ module.exports = {
     update: crud.update,
     delete: crud.delete,
     getByID: crud.getByID,
-    list: crud.list,
-    addRound: function(duelID, quizID, callback) {
+    list: crud.list
+    /* addRound: function(duelID, quizID, callback) {
         crud.getByID(duelID, function(err, duel) {
             if (err) {
                 callback(crud.badRequest);
@@ -33,5 +33,5 @@ module.exports = {
                 });
 			}
         });
-    }
+    }*/
 };
