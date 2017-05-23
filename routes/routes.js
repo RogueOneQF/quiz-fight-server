@@ -26,7 +26,7 @@ module.exports = function(app) {
                     'data': {
                         'key1': "PROVA",
                         'param': req.query.param,
-                        'key3': true
+                        'key3': "true"
                     }
                 }
             )
