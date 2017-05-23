@@ -25,16 +25,16 @@ module.exports = function(app) {
                 {
                     'data': {
                         'key1': "PROVA",
-                        'key2': "TEST",
+                        'param': req.query.param,
                         'key3': true
                     }
                 }
             )
                 .then(function(response) {
-                    console.log("Successfully sent message:", response);
+                    res.send('OK')
                 })
                 .catch(function(error) {
-                    console.log("Error sending message:", error);
+                    res.send(error)
                 });
         }
     )
