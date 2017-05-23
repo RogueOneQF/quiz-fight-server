@@ -19,7 +19,6 @@ var put = function(req, res) {
                     }]
                 }
             }, function(err, user) {
-                    console.log(err, user)
                     res.status(201).send();
                 });
         } else { // existing user
@@ -27,11 +26,18 @@ var put = function(req, res) {
                 // look for an existing deviceID corresponding to the current one
                 found = (user.devices[i].deviceID == req.body.deviceID);
             }
-            if (!found) {
-                user.devices.push({
-                    'deviceID': req.body.deviceID,
-                    'token': req.body.token
-                });
+            if (found && user.devices[i - 1].token == req.body.token) {
+                res.send();
+            } else {
+                if (found && user.devices[i - 1].token != req.body.token) {
+                    user.devices[i - 1].token = req.body.token;
+                } else {
+                    user.devices.push({
+                        'deviceID': req.body.deviceID,
+                        'token': req.body.token
+                    });
+                }
+
                 users.update({
                     'elementID': user.id,
                     'element': user
@@ -42,8 +48,6 @@ var put = function(req, res) {
                         res.send();
                     }
                 });
-            } else {
-                res.send();
             }
         }
     });
