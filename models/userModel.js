@@ -8,7 +8,10 @@ var User = (function () {
         return new mongoose.Schema({
             googleUsername: {type: String, required: true},
             // different devices have different tokens
-            tokens: [{type: String, required: true}]
+            devices: [{
+                deviceID: {type: String, required: true},
+                token: {type: String, required: true}
+            }]
         });
     };
 

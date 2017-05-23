@@ -4,6 +4,8 @@ var users = require('../controllers/userController');
 var errorHandler = require('../modules/errorHandler');
 
 var put = function(req, res) {
+    var found = false;
+    var i = 0;
     users.getByUsername({'googleUsername': req.body.username}, function(err, user) {
         if (err && err.status == 400) {
             errorHandler(res, err);
@@ -11,15 +13,25 @@ var put = function(req, res) {
             users.create({
                 'element': {
                     'googleUsername': req.body.username,
-                    'tokens': [req.body.token]
+                    'devices': [{
+                        'deviceID': req.body.deviceID,
+                        'token': req.body.token
+                    }]
                 }
             }, function(err, user) {
-                	console.log(err, user);
+                    console.log(err, user)
                     res.status(201).send();
                 });
         } else { // existing user
-            if (user.tokens.indexOf(req.body.token) == -1) {
-                user.tokens.push(req.body.token);
+            for(i; i < user.devices.length && !found; i++) {
+                // look for an existing deviceID corresponding to the current one
+                found = (user.devices[i].deviceID == req.body.deviceID);
+            }
+            if (!found) {
+                user.devices.push({
+                    'deviceID': req.body.deviceID,
+                    'token': req.body.token
+                });
                 users.update({
                     'elementID': user.id,
                     'element': user
