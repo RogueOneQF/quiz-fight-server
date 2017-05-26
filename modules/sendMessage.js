@@ -1,32 +1,31 @@
 'use strict';
 
-module.exports = function(player, winner, score, opponentsName) {
-    var message, title;
-    if (winner) {
-        message = "You defeated " + opponentsName + " " + score.player + " - " + score.opponent;
-        title = "You won :)";
-    } else {
-        message = opponentsName + " defeated you " + score.opponent + " - " + score.player;
-        title = "You lost :(";
-    }
-    var payload = {
-        'data': {
-            'tie':              (winner === null),
-            'winner':           winner,
-            'playerScore':      score.player,
-            'opponentScore':    score.opponent
-        },
-        'notification': {
-            'title': title,
-            'body': message
-        }
-    };
+var admin = require('firebase-admin');
+var users = require('../controllers/userController');
 
-    admin.messaging().sendToDevice(player, payload)
+function send(player, payload) {
+    admin.messaging().sendToDevice(getTokensFromDevices(player.devices), {'data': payload})
         .then(function(response) {
             console.log("Successfully sent message:", response);
         })
         .catch(function(error) {
             console.log("Error sending message:", error);
         });
+}
+
+function getTokensFromDevices(devices) {
+    return devices.map(function(device) {
+        return device.token;
+    });
+}
+
+module.exports = function(user, payload) {
+    if (user.devices) {
+        send(user, payload);
+    }
+    users.getByUsername({'googleUsername': user}, function(err, result) {
+        if (!err && result) {
+            send(result, payload);
+        }
+    });
 };
