@@ -120,7 +120,12 @@ var post = function(req, res) {
                                                 'trueOrFalse': question.trueOrFalse,
                                                 'answer': question.answer,
                                                 'difficulty': question.difficulty,
-                                                'options': question.options
+                                                'options': question.options.map(function(option) {
+                                                    return {
+                                                        'option_id': option.option_id,
+                                                        'option': option.option
+                                                    }
+                                                })
                                             }
                                         })
             				        });
