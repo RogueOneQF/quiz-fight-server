@@ -112,8 +112,17 @@ var post = function(req, res) {
                                 } else {
                                     callback(null, {
             				            'duelID': duel.id,
-            				            'quizID': [result1.quiz.id, result2.quiz.id, result3.quiz.id],
-            				            'questions': [result1.questions, result2.questions, result3.questions]
+            				            'quizID': result1.quiz.id,
+                                        'topic': (result1.questions[0].topic),
+            				            'questions': result1.questions.map(function(question) {
+                                            return {
+                                                'question': question.question,
+                                                'trueOrFalse': question.trueOrFalse,
+                                                'answer': question.answer,
+                                                'difficulty': question.difficulty,
+                                                'options': question.options
+                                            }
+                                        })
             				        });
             				    }
             				});
