@@ -16,6 +16,6 @@ module.exports = function(app) {
     app.route('/user')
         .put(addToken);
 
-    app.route('/scores')
+    app.route('/scores/:playerID/:duelID')
         .get(scores);
 }
