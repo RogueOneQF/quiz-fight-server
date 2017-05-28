@@ -16,7 +16,6 @@ module.exports = function(modelName) {
 
 			elem.save(function(err) {
 				if (err) {
-                    console.log(err);
                     callback(badRequest);
 				} else {
 					callback(undefined, elem);
