@@ -137,7 +137,7 @@ var post = function(req, res) {
                         } else {
                             res.status(201).send(result[1]);
                             sendMessage(actualOpponent, {
-                                'id': 2,
+                                'id': "2",
                                 'title': req.body.user1Username + " has dared you",
                                 'message': "Go to show who you really are!",
                                 'duelID': result[1].duelID,
