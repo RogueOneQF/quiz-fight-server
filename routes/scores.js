@@ -5,7 +5,7 @@ var errorHandler = require('../modules/errorHandler');
 
 module.exports = function(req, res) {
     var ids = req.params.duelID.split(',');//(req.param.duelID instanceof Array) ? req.param.duelID : [req.param.duelID];
-    duels.getScoresByIDs(ids, req.param.playerID, function(err, scores) {
+    duels.getScoresByIDs(ids, req.params.playerID, function(err, scores) {
         if (err) {
             errorHandler(res, err);
         } else {
