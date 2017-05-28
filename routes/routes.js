@@ -3,6 +3,7 @@
 var fight = require('./fight');
 var result = require('./result');
 var addToken = require('./addToken');
+var scores = require('./scores');
 
 module.exports = function(app) {
 	app.route('/fight')
@@ -14,4 +15,7 @@ module.exports = function(app) {
 
     app.route('/user')
         .put(addToken);
+
+    app.route('/scores')
+        .get(scores);
 }

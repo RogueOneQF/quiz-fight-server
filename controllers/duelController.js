@@ -10,28 +10,21 @@ module.exports = {
     update: crud.update,
     delete: crud.delete,
     getByID: crud.getByID,
-    list: crud.list
-    /* addRound: function(duelID, quizID, callback) {
-        crud.getByID(duelID, function(err, duel) {
+    list: crud.list,
+    getScoresByIDs: function(ids, playerID, callback) {
+        var oids = ids.map(function(id) {
+            return mongoose.Types.ObjectId(id);
+        });
+        Duel.getModel().find({_id: {$in: oids}}, function(err, duels) {
             if (err) {
                 callback(crud.badRequest);
-			} else if(!duel) {
+            } else if (!duels) {
                 callback(crud.notFound);
             } else {
-                duel.quizzes.push(quizID);
-                crud.update({
-                    'elementID': duelID,
-                    'element': duel
-                }, function(err, oldDuel) {
-                    if (err) {
-                        callback(crud.badRequest);
-    				} else if (!oldDuel) {
-                        callback(crud.notFound);
-                    } else {
-    					callback(undefined, duel);
-    				}
-                });
-			}
-        });
-    }*/
+                callback(null, duels.map(function(element) {
+                    return (element.user1ID == playerID) ? element.user1Score : element.user2Score;
+                }));
+            }
+        })
+    }
 };
