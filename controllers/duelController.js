@@ -22,7 +22,7 @@ module.exports = {
                 callback(crud.notFound);
             } else {
                 callback(null, duels.map(function(element) {
-                    return (element.user1ID == playerID) ? element.user1Score : element.user2Score;
+                    return (element.user1ID == playerID) ? element.user2Score : element.user1Score;
                 }));
             }
         })
