@@ -13,21 +13,19 @@ var getFilterObject = function(filter) {
 }
 
 // efficient unique random number generator
-var fisherYates = function (numbers, stopCount) {
-    var i = numbers.length;
-    if (i == 0) {
-        return false;
-    }
-    var c = 0, tempi, tempj, j;
-    while (--i && c != stopCount) {
-        j = Math.floor(Math.random() * (i + 1));
-        tempi = numbers[i];
-        tempj = numbers[j];
-        numbers[i] = tempj;
-        numbers[j] = tempi;
+function shuffle(array) {
+    var m = array.length, t, i;
+    // While there remain elements to shuffle…
+    while (m) {
+        // Pick a remaining element…
+        i = Math.floor(Math.random() * m--);
 
-        c++;
+        // And swap it with the current element.
+        t = array[m];
+        array[m] = array[i];
+        array[i] = t;
     }
+    return array;
 }
 
 var createRound = function(filter, callback) {
@@ -40,8 +38,8 @@ var createRound = function(filter, callback) {
             for (var i = 0; i < qs.length; i++) {
                 numbers.push(i);
             }
-            fisherYates(numbers, 5);
-            var randoms = numbers.slice(0, 5);
+
+            var randoms = shuffle(numbers).slice(0, 5);
 
             var mqs = randoms.map(function(r) {
                 return qs[r];
@@ -60,9 +58,9 @@ var createRound = function(filter, callback) {
 };
 
 var post = function(req, res) {
-    createRound(getFilterObject(req.body.topic1), function(err1, result1) {
-		createRound(getFilterObject(req.body.topic2), function(err2, result2) {
-			createRound(getFilterObject(req.body.topic3), function(err3, result3) {
+    createRound(getFilterObject(req.body.topics[0]), function(err1, result1) {
+		createRound(getFilterObject(req.body.topics[1]), function(err2, result2) {
+			createRound(getFilterObject(req.body.topics[2]), function(err3, result3) {
                 if (err1 || err2 || err3) {
                     errorHandler(err1 || err2 || err3);
                 } else {
@@ -139,9 +137,11 @@ var post = function(req, res) {
                         } else {
                             res.status(201).send(result[1]);
                             sendMessage(actualOpponent, {
+                                'id': 2,
                                 'title': req.body.user1Username + " has dared you",
                                 'message': "Go to show who you really are!",
-                                'duelID': result[1].duelID
+                                'duelID': result[1].duelID,
+                                'opponent': req.body.user1Username
                             })
                         }
                     });
