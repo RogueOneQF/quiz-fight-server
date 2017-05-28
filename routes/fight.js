@@ -58,10 +58,12 @@ var createRound = function(filter, callback) {
 };
 
 var post = function(req, res) {
+    console.log(req.body);
     createRound(getFilterObject(req.body.topics[0]), function(err1, result1) {
 		createRound(getFilterObject(req.body.topics[1]), function(err2, result2) {
 			createRound(getFilterObject(req.body.topics[2]), function(err3, result3) {
                 if (err1 || err2 || err3) {
+                    console.log(err1, err2, err3);
                     errorHandler(err1 || err2 || err3);
                 } else {
                     var actualOpponent;
