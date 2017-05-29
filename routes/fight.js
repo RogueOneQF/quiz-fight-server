@@ -151,6 +151,36 @@ var post = function(req, res) {
     });
 };
 
+var get = function(req, res) {
+    duels.getByIDAndPopulate(req.params.duelID, function(err, duel) {
+        if (err) {
+            errorHandler(err);
+        } else {
+            var round = (duel.user1ID == req.params.playerID) ? duel.user1Score.length : duel.user1Score.length;
+            res.json({
+                'duelID': duel.id,
+                'quizID': duel.quizzes[round].id,
+                'topic': duel.quizzes[round].questions[0].topic,
+                'questions': duel.quizzes[round].questions.map(function(question) {
+                    return {
+                        'question': question.question,
+                        'trueOrFalse': question.trueOrFalse,
+                        'answer': question.answer,
+                        'difficulty': question.difficulty,
+                        'options': question.options.map(function(option) {
+                            return {
+                                'option_id': option.option_id,
+                                'option': option.option
+                            }
+                        })
+                    }
+                })
+            });
+        }
+    });
+}
+
 module.exports = {
-    post: post
+    post: post,
+    get: get
 };

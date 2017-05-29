@@ -9,6 +9,9 @@ module.exports = function(app) {
 	app.route('/fight')
         .post(fight.post);
 
+    app.route('/fight/:playerID/:duelID')
+        .get(fight.get);
+
 	app.route('/result')
         .get(result.get)
         .put(result.put);
