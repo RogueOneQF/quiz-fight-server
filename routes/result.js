@@ -39,7 +39,7 @@ var get = function(req, res) {
 };
 
 var put = function(req, res) {
-    console.log(req.body);
+    console.log("AAAAAAAAAAAA" + req.body);
     duels.getByID(req.body.duelID, function(err, duel) {
         var allowScore = function (duel, actualScore) {
             var duelIndex = duel.quizzes.indexOf(req.body.quizID);
