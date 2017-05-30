@@ -11,5 +11,5 @@ module.exports = function(req, res) {
         } else {
             res.json({'scores': scores});
         }
-    })
+    });
 }
