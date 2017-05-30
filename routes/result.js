@@ -3,6 +3,7 @@
 var duels = require('../controllers/duelController');
 var quizzes = require('../controllers/quizController');
 var errorHandler = require('../modules/errorHandler');
+var sendMessage = require('../modules/sendMessage');
 
 var checkWinner = function(duel, player) {
     var add = function(a, b) {return a + b;};
@@ -39,16 +40,16 @@ var get = function(req, res) {
 
 var put = function(req, res) {
     duels.getByID(req.body.duelID, function(err, duel) {
-        var allowScore = function (duel, actualScore) {
+        /*var allowScore = function (duel, actualScore) {
             var duelIndex = duel.quizzes.indexOf(req.body.quizID);
             return (duelIndex != -1 && duel[actualScore].length < duelIndex + 1);
-        };
+        };*/
 
         if (err) {
             errorHandler(res, err);
         } else {
             var scoreField = (req.body.playerID == duel.user1ID) ? "user1Score" : "user2Score";
-            if (allowScore(duel, scoreField)) {
+            if (true) {
                 duel[scoreField].push(req.body.score);
                 duels.update({
                     'elementID': duel.id,
@@ -71,6 +72,7 @@ var put = function(req, res) {
                                     } else {
                                         var outcome = checkWinner(duel, req.body.playerID);
                                         res.send();
+                                        console.log(duel.user1Score.length, duel.user2Score.length);
                                         if (duel.user1Score.length == duel.user2Score.length) {
                                             var notification = {};
                                             if (duel.user1Score.length < 3) {
