@@ -5,8 +5,9 @@ var quizzes = require('../controllers/quizController');
 var errorHandler = require('../modules/errorHandler');
 var sendMessage = require('../modules/sendMessage');
 
+var add = function(a, b) {return a + b;};
+
 var checkWinner = function(duel, player) {
-    var add = function(a, b) {return a + b;};
     var score1 = duel.user1Score.reduce(add, 0);
     var score2 = duel.user2Score.reduce(add, 0);
     var player1Winner, tie = false;
@@ -23,8 +24,7 @@ var checkWinner = function(duel, player) {
     }
     return {
         'tie': tie,
-        'winner': (player1Winner === null) ? null :
-            ((player == duel.user1_id) ? player1Winner : !player1Winner)
+        'winner': player1Winner
     };
 };
 
@@ -39,7 +39,6 @@ var get = function(req, res) {
 };
 
 var put = function(req, res) {
-    console.log("AAAAAAAAAAAA" + req.body);
     duels.getByID(req.body.duelID, function(err, duel) {
         var allowScore = function (duel, actualScore) {
             var duelIndex = duel.quizzes.indexOf(req.body.quizID);
@@ -85,7 +84,8 @@ var put = function(req, res) {
                                                 };
                                             } else {
                                                 var title = (outcome.winner) ?
-                                                    "You won!" : ((outcome.tie) ? "Tie!" : "You lost!");
+                                                    "You defeated " + duel.user2ID + " :)" :
+                                                    ((outcome.tie) ? "Tie!" : duel.user2ID + " defeated you :(");
                                                 var score1 = duel.user1Score.reduce(add, 0);
                                                 var score2 = duel.user2Score.reduce(add, 0);
                                                 var message = (req.body.playerID == duel.user1ID) ?
