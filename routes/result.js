@@ -39,17 +39,18 @@ var get = function(req, res) {
 };
 
 var put = function(req, res) {
+    console.log(req.body);
     duels.getByID(req.body.duelID, function(err, duel) {
-        /*var allowScore = function (duel, actualScore) {
+        var allowScore = function (duel, actualScore) {
             var duelIndex = duel.quizzes.indexOf(req.body.quizID);
             return (duelIndex != -1 && duel[actualScore].length < duelIndex + 1);
-        };*/
+        };
 
         if (err) {
             errorHandler(res, err);
         } else {
             var scoreField = (req.body.playerID == duel.user1ID) ? "user1Score" : "user2Score";
-            if (true) {
+            if (allowScore(duel, scoreField)) {
                 duel[scoreField].push(req.body.score);
                 duels.update({
                     'elementID': duel.id,
