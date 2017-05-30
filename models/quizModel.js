@@ -18,8 +18,8 @@ var Quiz = (function () {
 		        }],
 				validate: [arrayLength, '{PATH} is not the correct length']
 			},
-            answers1: [[{type: Boolean, required: true, default: []}]],
-            answers2: [[{type: Boolean, required: true, default: []}]]
+            answers1: [{type: Boolean, required: true, default: []}],
+            answers2: [{type: Boolean, required: true, default: []}]
         });
     };
 

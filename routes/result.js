@@ -62,18 +62,18 @@ var put = function(req, res) {
                             if (err) {
                                 errorHandler(res, err);
                             } else {
-                                quiz["answers" + scoreField.charAt(4)].push(req.body.answers);
+                                quiz["answers" + scoreField.charAt(4)] = req.body.answers;
                                 quizzes.update({
                                     'elementID': quiz.id,
                                     'element': quiz
-                                }, function (err, quiz) {
+                                }, function (err, oldQuiz) {
                                     if (err) {
                                         errorHandler(res, err);
                                     } else {
                                         var outcome = checkWinner(duel, req.body.playerID);
                                         res.send();
-                                        console.log(duel.user1Score.length, duel.user2Score.length);
                                         if (duel.user1Score.length == duel.user2Score.length) {
+                                        // Duel not completed
                                             var notification = {};
                                             if (duel.user1Score.length < 3) {
                                                 notification = {
@@ -83,23 +83,45 @@ var put = function(req, res) {
                                                     'duelID': duel.id
                                                 };
                                             } else {
-                                                var title = (outcome.winner) ?
-                                                    "You defeated " + duel.user2ID + " :)" :
-                                                    ((outcome.tie) ? "Tie!" : duel.user2ID + " defeated you :(");
+                                            // Duel completed
                                                 var score1 = duel.user1Score.reduce(add, 0);
                                                 var score2 = duel.user2Score.reduce(add, 0);
-                                                var message = (req.body.playerID == duel.user1ID) ?
-                                                                (score1 + " - " + score2) :
-                                                                (score2 + " - " + score1);
+                                                var title = (outcome.winner) ?
+                                                    "You won :)" : ((outcome.tie) ? "Tie!" : "You lost :(");
+                                                var message = "";
+                                                if (req.body.playerID == duel.user1ID) {
+                                                    message = score1 + " - " + score2;
+                                                } else {
+                                                    message = score2 + " - " + score1;
+                                                }
                                                 notification = {
                                                     'id': "4",
                                                     "title": title,
                                                     "message": message,
+                                                    "duelID": duel.id,
                                                     "outcome": (outcome.winner + "")
                                                 }
                                             }
-                                            sendMessage(duel.user1ID, notification);
-                                            sendMessage(duel.user2ID, notification);
+
+
+                                            var answersStringPlayer = "";
+                                            var answersStringOpponent = "";
+                                            var notification1 = notification;
+                                            var notification2 = notification;
+
+                                            if (req.body.playerID == duel.user1ID) {
+                                                answersStringPlayer = quiz.answers2.join();
+                                                answersStringOpponent = req.body.answers.join();
+                                            } else {
+                                                answersStringPlayer = quiz.answers1.join();
+                                                answersStringOpponent = req.body.answers.join();
+                                            }
+
+                                            notification1.answers = answersStringPlayer;
+                                            notification2.answers = answersStringOpponent;
+
+                                            sendMessage(duel.user1ID, notification1);
+                                            sendMessage(duel.user2ID, notification2);
                                         }
                                     }
                                 });
