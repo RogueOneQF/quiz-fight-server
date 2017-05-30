@@ -112,6 +112,7 @@ var post = function(req, res) {
             				            'duelID': duel.id,
             				            'quizID': result1.quiz.id,
                                         'topic': (result1.questions[0].topic),
+                                        'opponent': duel.user2ID,
             				            'questions': result1.questions.map(function(question) {
                                             return {
                                                 'question': question.question,
@@ -161,6 +162,7 @@ var get = function(req, res) {
                 'duelID': duel.id,
                 'quizID': duel.quizzes[round].id,
                 'topic': duel.quizzes[round].questions[0].topic,
+                'opponent': duel.user2ID,
                 'questions': duel.quizzes[round].questions.map(function(question) {
                     return {
                         'question': question.question,
