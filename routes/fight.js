@@ -143,7 +143,7 @@ var post = function(req, res) {
                                 'message': "Go to show who you really are!",
                                 'duelID': result[1].duelID,
                                 'opponent': req.body.user1Username
-                            })
+                            });
                         }
                     });
                 }

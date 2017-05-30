@@ -69,7 +69,35 @@ var put = function(req, res) {
                                     if (err) {
                                         errorHandler(res, err);
                                     } else {
-                                        res.json(checkWinner(duel, req.body.playerID));
+                                        var outcome = checkWinner(duel, req.body.playerID);
+                                        res.send();
+                                        if (duel.user1Score.length == duel.user2Score.length) {
+                                            var notification = {};
+                                            if (duel.user1Score.length < 3) {
+                                                notification = {
+                                                    'id': "3",
+                                                    'title': "Round completed!",
+                                                    'message': "You can now go on answering.",
+                                                    'duelID': duel.id
+                                                };
+                                            } else {
+                                                var title = (outcome.winner) ?
+                                                    "You won!" : ((outcome.tie) ? "Tie!" : "You lost!");
+                                                var score1 = duel.user1Score.reduce(add, 0);
+                                                var score2 = duel.user2Score.reduce(add, 0);
+                                                var message = (req.body.playerID == duel.user1ID) ?
+                                                                (score1 + " - " + score2) :
+                                                                (score2 + " - " + score1);
+                                                notification = {
+                                                    'id': "4",
+                                                    "title": title,
+                                                    "message": message,
+                                                    "outcome": (outcome.winner + "")
+                                                }
+                                            }
+                                            sendMessage(duel.user1ID, notification);
+                                            sendMessage(duel.user2ID, notification);
+                                        }
                                     }
                                 });
                             }
