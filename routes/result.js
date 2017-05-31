@@ -45,7 +45,8 @@ var checkWinner = function(duel, player) {
 
  */
 var get = function(req, res) {
-    duels.getChangesAndNewDuels(req.params.playerID, function(err, filteredDuels) {
+    var ids = (req.params.ids !== undefined) ? req.params.ids.split(',') : [];
+    duels.getChangesAndNewDuels(ids, req.params.playerID, function(err, filteredDuels) {
         if (err) {
             errorHandler(res, err);
         } else {

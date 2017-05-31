@@ -39,7 +39,7 @@ module.exports = {
      * @param playerID Playey's ID
      * @return Duels populated with Quiz
      */
-    getChangesAndNewDuels: function(playerID, callback) {
+    getChangesAndNewDuels: function(ids, playerID, callback) {
         Duel.getModel().find({$or:[{'user1ID': playerID}, {'user2ID': playerID}]})
         .populate('quizzes')
         .exec(function(err, duels) {
@@ -50,8 +50,9 @@ module.exports = {
             } else {
                 var filteredDuels = [];
                 for (var i = 0; i < duels.length; i++) {
-                    var playerScore, opponentAnswers, opponent;
+                    var playerScore, opponentAnswers, opponent, answers = [];
                     var duel = duels[i];
+
                     if (playerID == duel.user1ID) {
                         playerScore = duel.user1Score;
                         opponentAnswers = "answers2";
@@ -62,16 +63,17 @@ module.exports = {
                         opponent = duel.user1ID;
                     }
 
-                    var lastRound = playerScore.length;
-                    if (lastRound < 3) {
-                        filteredDuels.push({
-                            'duelID': duel.id,
-                            'opponent': opponent,
-                            'answers': (duel.quizzes[lastRound] !== undefined && duel.quizzes[lastRound] !== null)
-                                            ? duel.quizzes[lastRound][opponentAnswers]
-                                            : []
+                    if (ids.indexOf(duel.id) != -1) {
+                        answers = duel.quizzes.map(function(quiz) {
+                            return quiz[opponentAnswers];
                         });
                     }
+
+                    filteredDuels.push({
+                        'duelID': duel.id,
+                        'opponent': opponent,
+                        'answers': answers
+                    });
                 }
 
                 callback(null, filteredDuels);

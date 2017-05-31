@@ -15,7 +15,7 @@ module.exports = function(app) {
 	app.route('/result')
         .put(result.put);
 
-    app.route('/result/:playerID')
+    app.route('/result/:playerID/:ids')
         .get(result.get);
 
     app.route('/user')
