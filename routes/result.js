@@ -121,7 +121,7 @@ var put = function(req, res) {
                                             } else { // Duel completed
                                                 var score1 = duel.user1Score.reduce(add, 0);
                                                 var score2 = duel.user2Score.reduce(add, 0);
-                                                var title = (outcome.winner) ?
+                                                var title = (!outcome.winner) ?
                                                     "You won :)" : ((outcome.tie) ? "Tie!" : "You lost :(");
                                                 var message = "";
                                                 if (req.body.playerID == duel.user1ID) {
