@@ -12,6 +12,12 @@ module.exports = {
     delete: crud.delete,
     getByID: crud.getByID,
     list: crud.list,
+    /**
+     * Given an array of duel ids and the requesting player's ID,
+     * `getScoresByIDs` returns an array of scores totalized during the requested
+     * duels. The result, or the error, is used a parameter for the `callback`
+     * function.
+     */
     getScoresByIDs: function(ids, playerID, callback) {
         var oids = ids.map(function(id) {
             return mongoose.Types.ObjectId(id);
@@ -28,6 +34,10 @@ module.exports = {
             }
         })
     },
+    /**
+     * Given a duel ID, `getByIDAndPopulate` returns (via callback) the populated
+     * duel, adding every information about quizzes and questions.
+     */
     getByIDAndPopulate: function(id, callback) {
         Duel.getModel().findById(id).populate('quizzes').exec(function(err, duel) {
             if (err) {
