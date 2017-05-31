@@ -50,7 +50,7 @@ var get = function(req, res) {
         if (err) {
             errorHandler(res, err);
         } else {
-            res.send(filteredDuels);
+            res.json({'pendingDuels': filteredDuels});
         }
     });
 };

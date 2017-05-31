@@ -70,11 +70,9 @@ module.exports = {
                     }
 
                     filteredDuels.push({
-                        'pendingDuels': {
-                            'duelID': duel.id,
-                            'opponent': opponent,
-                            'answers': answers
-                        }
+                        'duelID': duel.id,
+                        'opponent': opponent,
+                        'answers': answers
                     });
                 }
 
