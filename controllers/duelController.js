@@ -35,6 +35,51 @@ module.exports = {
         })
     },
     /**
+     * Gets every pending duel (both new and possibly updated).
+     * @param playerID Playey's ID
+     * @return Duels populated with Quiz
+     */
+    getChangesAndNewDuels: function(playerID, callback) {
+        Duel.getModel().find({$or:[{'user1ID': playerID}, {'user2ID': playerID}]})
+        .populate('quizzes')
+        .exec(function(err, duels) {
+            if (err) {
+                callback(crud.badRequest);
+            } else if (!duels) {
+                callback(crud.notFound);
+            } else {
+                var filteredDuels = [];
+                for (var i = 0; i < duels.length; i++) {
+                    var playerScore, opponentAnswers, opponent;
+                    var duel = duels[i];
+                    if (playerID == duel.user1ID) {
+                        playerScore = duel.user1Score;
+                        opponentAnswers = "answers2";
+                        opponent = duel.user2ID;
+                    } else {
+                        playerScore = duel.user2Score;
+                        opponentAnswers = "answers1";
+                        opponent = duel.user1ID;
+                    }
+
+                    var lastRound = playerScore.length;
+                    if (lastRound < 3) {
+                        filteredDuels.push({
+                            'duelID': duel.id,
+                            'opponent': opponent,
+                            'answers': (duel.quizzes[lastRound] !== undefined && duel.quizzes[lastRound] !== null)
+                                            ? duel.quizzes[lastRound][opponentAnswers]
+                                            : []
+                        });
+                    }
+                }
+
+                callback(null, filteredDuels);
+            }
+        });
+    }
+    ,
+    /**
      * Given a duel ID, `getByIDAndPopulate` returns (via callback) the populated
      * duel, adding every information about quizzes and questions.
      */

@@ -13,8 +13,10 @@ module.exports = function(app) {
         .get(fight.get);
 
 	app.route('/result')
-        .get(result.get)
         .put(result.put);
+
+    app.route('/result/:playerID')
+        .get(result.get);
 
     app.route('/user')
         .put(addToken);

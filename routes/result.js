@@ -42,21 +42,14 @@ var checkWinner = function(duel, player) {
 };
 
 /**
- * Check for a victory
- * @param req.query.duelID Duel ID
- * @param req.query.playerD Player's username
- * @return A JSON of the following type:
- {
-     'tie': Boolean,
-     'winner': Boolean // true if player won, false otherwise
- }
+
  */
 var get = function(req, res) {
-    duels.getByID(req.query.duelID, function(err, duel) {
+    duels.getChangesAndNewDuels(req.params.playerID, function(err, filteredDuels) {
         if (err) {
             errorHandler(res, err);
         } else {
-            res.json(checkWinner(duel, req.query.playerID));
+            res.send(filteredDuels);
         }
     });
 };
