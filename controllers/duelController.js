@@ -50,7 +50,7 @@ module.exports = {
             } else {
                 var filteredDuels = [];
                 for (var i = 0; i < duels.length; i++) {
-                    var playerScore, opponentAnswers, opponent, answers = [];
+                    var playerScore, opponentAnswers, opponent, answers = [[]];
                     var duel = duels[i];
 
                     if (playerID == duel.user1ID) {
