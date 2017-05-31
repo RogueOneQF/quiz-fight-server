@@ -46,7 +46,7 @@ module.exports = {
             if (err) {
                 callback(crud.badRequest);
             } else if (!duels) {
-                callback(crud.notFound);
+                callback(null, []);
             } else {
                 var filteredDuels = [];
                 for (var i = 0; i < duels.length; i++) {
