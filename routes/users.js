@@ -12,7 +12,7 @@ var get = function(req, res) {
      */
 	users.getByFilter({'facebookId': req.params.facebookId}, function(err, user) {
 		if (err) {
-            errorHandler(res, error);
+            errorHandler(res, err);
         } else {
 			res.json({'googleUsername': user.googleUsername});
 		}
@@ -21,11 +21,11 @@ var get = function(req, res) {
 	
 var put = function(req, res) {
 
-	users.getByFilter({'googleUsername': req.params.googleUsername}, function (error, user) {
-		if (error) {
+	users.getByFilter({'googleUsername': req.params.googleUsername}, function (err, user) {
+		if (err) {
             errorHandler(res, err);
         } else {
-			user["facebookId"] = req.params.facebookId;
+			user.facebookId = req.params.facebookId;
 			users.update({
 				'elementID': user._id,
 				'element': user
