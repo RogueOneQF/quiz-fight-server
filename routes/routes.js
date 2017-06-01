@@ -26,5 +26,8 @@ module.exports = function(app) {
         .get(scores);
 
 	app.route('/users/:facebookId')
-		.get(users);
+		.get(users.get);
+
+	app.route('/users/:facebookId')
+		.put(users.put);
 }
