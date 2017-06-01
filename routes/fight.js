@@ -89,7 +89,6 @@ var createRound = function(filter, callback) {
  * @param req.body.topics Array containing the three topics
  * @param req.body.user2 Opponent. It can be undefined if "random duel" was chosen
  * @param req.body.user1 Current player, the one who's starting the duel
- * @param req.body.user1Username Current player Games username, used for the opponent's notification
  * @return An JSON of the following type:
     {
      'duelID': String,
@@ -195,10 +194,10 @@ var post = function(req, res) {
                             // Send the notification
                             sendMessage(actualOpponent, {
                                 'id': "2",
-                                'title': req.body.user1Username + " has dared you",
+                                'title': req.body.user1 + " has dared you",
                                 'message': "Go to show who you really are!",
                                 'duelID': result[1].duelID,
-                                'opponent': req.body.user1Username
+                                'opponent': req.body.user1
                             });
                         }
                     });
