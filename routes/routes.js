@@ -4,6 +4,7 @@ var fight = require('./fight');
 var result = require('./result');
 var addToken = require('./addToken');
 var scores = require('./scores');
+var users = require('./users');
 
 module.exports = function(app) {
 	app.route('/fight')
@@ -23,4 +24,7 @@ module.exports = function(app) {
 
     app.route('/scores/:playerID/:duelID')
         .get(scores);
+
+	app.route('/users/:facebookId')
+		.get(users);
 }

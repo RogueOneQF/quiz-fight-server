@@ -11,7 +11,7 @@ module.exports = {
     delete: crud.delete,
     getByID: crud.getByID,
     list: crud.list,
-    getByUsername: function(filter, callback) {
+    getByFilter: function(filter, callback) {
         User.getModel().findOne(filter, function(err, user) {
             if (err) {
                 callback(crud.badRequest);

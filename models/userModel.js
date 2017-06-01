@@ -7,6 +7,7 @@ var User = (function () {
 	var getSchema = function() {
         return new mongoose.Schema({
             googleUsername: {type: String, required: true},
+			facebookId: String,
             // different devices have different tokens
             devices: [{
                 deviceID: {type: String, required: true},

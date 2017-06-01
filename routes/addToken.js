@@ -16,7 +16,7 @@ var put = function(req, res) {
     var found = false;
     var i = 0;
     // Get the user by her username
-    users.getByUsername({'googleUsername': req.body.username}, function(err, user) {
+    users.getByFilter({'googleUsername': req.body.username}, function(err, user) {
         if (err && err.status == 400) {
             errorHandler(res, err);
         } else if (err && err.status == 404) { // new user --> add a document
