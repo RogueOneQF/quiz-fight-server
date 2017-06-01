@@ -28,6 +28,6 @@ module.exports = function(app) {
 	app.route('/users/:facebookId')
 		.get(users.get);
 
-	app.route('/users/:facebookId')
+	app.route('/users/:googleUsername/:facebookId')
 		.put(users.put);
 }
