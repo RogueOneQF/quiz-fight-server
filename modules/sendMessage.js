@@ -23,7 +23,7 @@ module.exports = function(user, payload) {
     if (user.devices) {
         send(user, payload);
     }
-    users.getByUsername({'googleUsername': user}, function(err, result) {
+    users.getByFilter({'googleUsername': user}, function(err, result) {
         if (!err && result) {
             send(result, payload);
         }
