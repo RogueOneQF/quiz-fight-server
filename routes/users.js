@@ -14,7 +14,10 @@ var get = function(req, res) {
 		if (err) {
             errorHandler(res, err);
         } else {
-			res.json({'googleUsername': user.googleUsername});
+			res.json({
+				'googleUsername': user.googleUsername,
+				'facebookId': user.facebookId
+			});
 		}
 	});
 }
@@ -32,8 +35,7 @@ var put = function(req, res) {
 			});
 			res.json({
 				'googleUsername': user.googleUsername,
-				'facebookId': user.facebookId,
-            	'devices': user.devices
+				'facebookId': user.facebookId
 			});
 		}
 	});
