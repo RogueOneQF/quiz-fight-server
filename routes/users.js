@@ -31,9 +31,9 @@ var put = function(req, res) {
 				'element': user
 			});
 			res.json({
-				googleUsername: user.googleUsername,
-				facebookId: user.facebookId,
-            	devices: user.devices
+				'googleUsername': user.googleUsername,
+				'facebookId': user.facebookId,
+            	'devices': user.devices
 			});
 		}
 	});
