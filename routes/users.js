@@ -15,7 +15,7 @@ var get = function(req, res) {
             errorHandler(res, err);
         } else {
 			res.json({
-				'googleUsername': user.googleUsername,
+				'username': user.googleUsername,
 				'facebookId': user.facebookId
 			});
 		}
@@ -34,7 +34,7 @@ var put = function(req, res) {
 				'element': user
 			});
 			res.json({
-				'googleUsername': user.googleUsername,
+				'username': user.googleUsername,
 				'facebookId': user.facebookId
 			});
 		}
