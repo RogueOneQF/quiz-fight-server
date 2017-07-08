@@ -126,7 +126,7 @@ var put = function(req, res) {
 						var title2 = (!outcome.winner && !outcome.tie) ?
                                                     "You won :)" : ((outcome.tie) ? "Tie!" : "You lost :(");
                                                 var message = "", title = "";
-                                                if (req.body.playerID == duel.user1ID) {
+                                                if (req.body.playerID != duel.user1ID) {
                                                     message = score1 + " - " + score2;
 						    title = title1;
                                                 } else {
