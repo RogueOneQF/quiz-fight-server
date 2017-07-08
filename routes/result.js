@@ -22,7 +22,7 @@ var checkWinner = function(duel, player) {
     // Sum the scores
     var score1 = duel.user1Score.reduce(add, 0);
     var score2 = duel.user2Score.reduce(add, 0);
-    var player1Winner, tie = false;
+    var player1Winner = false, tie = false;
     // Do some controls for selelctiong the winner, if exists
     if (duel.user1Score.length == 3 && duel.user2Score.length == 3) {
         if (score1 > score2) {
@@ -121,13 +121,17 @@ var put = function(req, res) {
                                             } else { // Duel completed
                                                 var score1 = duel.user1Score.reduce(add, 0);
                                                 var score2 = duel.user2Score.reduce(add, 0);
-                                                var title = (!outcome.winner) ?
+                                                var title1 = (outcome.winner && !outcome.tie) ?
                                                     "You won :)" : ((outcome.tie) ? "Tie!" : "You lost :(");
-                                                var message = "";
+						var title2 = (!outcome.winner && !outcome.tie) ?
+                                                    "You won :)" : ((outcome.tie) ? "Tie!" : "You lost :(");
+                                                var message = "", title = "";
                                                 if (req.body.playerID == duel.user1ID) {
                                                     message = score1 + " - " + score2;
+						    title = title1;
                                                 } else {
                                                     message = score2 + " - " + score1;
+						    title = title2;
                                                 }
                                                 // Notify for victory
                                                 notification = {
