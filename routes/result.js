@@ -118,52 +118,36 @@ var put = function(req, res) {
                                                     'message': "You can now go on answering.",
                                                     'duelID': duel.id
                                                 };
+					    	sendMessage(duel.user1ID, notification);
+                                                sendMessage(duel.user2ID, notification);
                                             } else { // Duel completed
-                                                var score1 = duel.user1Score.reduce(add, 0);
-                                                var score2 = duel.user2Score.reduce(add, 0);
-                                                var title1 = (outcome.winner && !outcome.tie) ?
-                                                    "You won :)" : ((outcome.tie) ? "Tie!" : "You lost :(");
-						var title2 = (!outcome.winner && !outcome.tie) ?
-                                                    "You won :)" : ((outcome.tie) ? "Tie!" : "You lost :(");
-                                                var message = "", title = "";
-                                                if (req.body.playerID != duel.user1ID) {
-                                                    message = score1 + " - " + score2;
-						    title = title1;
-                                                } else {
-                                                    message = score2 + " - " + score1;
-						    title = title2;
-                                                }
                                                 // Notify for victory
                                                 notification = {
                                                     'id': "4",
-                                                    "title": title,
-                                                    "message": message,
                                                     "duelID": duel.id,
                                                     "outcome": (outcome.winner + "")
                                                 }
+
+						var notification1 = notification;
+						var notification2 = notification;
+
+						var score1 = duel.user1Score.reduce(add, 0);
+                                                var score2 = duel.user2Score.reduce(add, 0);
+                                                notification1.title = (outcome.winner && !outcome.tie) ?
+                                                    "You won :)" : ((outcome.tie) ? "Tie!" : "You lost :(");
+						notification1.message = score1 + " - " + score2;
+						notification2.title = (!outcome.winner && !outcome.tie) ?
+                                                    "You won :)" : ((outcome.tie) ? "Tie!" : "You lost :(");
+						notification2.message = score2 + " - " + score1;
+
+						if (req.body.playerID == duel.user1ID) {
+						    sendMessage(duel.user1ID, notification1);
+						    sendMessage(duel.user2ID, notification2);
+						} else {
+						    sendMessage(duel.user1ID, notification2);
+						    sendMessage(duel.user2ID, notification1);
+						}
                                             }
-
-                                            // Also send back the answers of the other player.
-                                            // In this way a client is able to correctly populate its history
-                                            // without further server requests.
-                                            var answersStringPlayer = "";
-                                            var answersStringOpponent = "";
-                                            var notification1 = notification;
-                                            var notification2 = notification;
-
-                                            if (req.body.playerID == duel.user1ID) {
-                                                answersStringPlayer = quiz.answers2.join();
-                                                answersStringOpponent = req.body.answers.join();
-                                            } else {
-                                                answersStringPlayer = quiz.answers1.join();
-                                                answersStringOpponent = req.body.answers.join();
-                                            }
-
-                                            notification1.answers = answersStringPlayer;
-                                            notification2.answers = answersStringOpponent;
-
-                                            sendMessage(duel.user1ID, notification1);
-                                            sendMessage(duel.user2ID, notification2);
                                         }
                                     }
                                 });
