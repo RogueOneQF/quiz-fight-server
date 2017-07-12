@@ -238,7 +238,7 @@ var get = function(req, res) {
             errorHandler(err);
         } else {
             // Retrieve the current round
-            var round = (duel.user1ID == req.params.playerID) ? duel.user1Score.length : duel.user1Score.length;
+            var round = (duel.user1ID == req.params.playerID) ? duel.user1Score.length : duel.user2Score.length;
             res.json({
                 'duelID': duel.id,
                 'quizID': duel.quizzes[round].id,
