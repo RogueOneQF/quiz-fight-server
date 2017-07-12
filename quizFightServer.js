@@ -3,6 +3,15 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
+var routes = require('./routes/routes');
+var admin = require("firebase-admin");
+
+var serviceAccount = require("./quiz-fight-167108-firebase-adminsdk-db0n7-1b1e306fb9.json");
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: "https://quiz-fight-167108.firebaseio.com"
+});
 
 mongoose.connect('mongodb://admin:admin@ds137441.mlab.com:37441/quizfight')
     .then(() =>  console.log('connection succesful'))
@@ -12,8 +21,7 @@ var app = express();
 app.use(bodyParser.json({limit: '5mb'}));
 app.use(bodyParser.urlencoded({ extended: true }));
 
-var routes = require('./routes/routes');
-app.use('/', routes);
+routes(app);
 
 // error handlers
 

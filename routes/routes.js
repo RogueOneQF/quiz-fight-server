@@ -1,15 +1,33 @@
 'use strict';
 
-var router = require('express').Router();
-var bodyParser = require('body-parser');
+var fight = require('./fight');
+var result = require('./result');
+var addToken = require('./addToken');
+var scores = require('./scores');
+var users = require('./users');
 
-router.get('/', function(req, res) {
-    res.json({test: 1});
-});
+module.exports = function(app) {
+	app.route('/fight')
+        .post(fight.post);
 
-router.options('/', function(req, res, next){
-    console.log(req.headers.origin);
-    res.send();
-});
+    app.route('/fight/:playerID/:duelID')
+        .get(fight.get);
 
-module.exports = router;
+	app.route('/result')
+        .put(result.put);
+
+    app.route('/result/:playerID/:ids')
+        .get(result.get);
+
+    app.route('/user')
+        .put(addToken);
+
+    app.route('/scores/:playerID/:duelID')
+        .get(scores);
+
+	app.route('/users/:facebookId')
+		.get(users.get);
+
+	app.route('/users/:googleUsername/:facebookId')
+		.put(users.put);
+}
